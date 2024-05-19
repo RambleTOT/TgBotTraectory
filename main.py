@@ -1,4 +1,4 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 from dotenv import load_dotenv
 import os
@@ -39,20 +39,36 @@ def button_click(update, context):
         context.bot.send_message(chat_id=update.effective_chat.id, text="Дополнительная информация.", reply_markup=reply_markup)
 
     if query.data == 'button2':
-        text = "Мастер классы"
-        context.bot.send_message(chat_id=update.effective_chat.id, text=text)
-        context.bot.send_photo(chat_id=update.effective_chat.id, photo=open('test_photo (2).png', 'rb'))
-        keyboard = [
-            [InlineKeyboardButton("Перейти на сайт", url='https://traektoriya-edu.ru/master-class')],
-            [InlineKeyboardButton("Назад", callback_data='back')]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Что-то о мастер классах", reply_markup=reply_markup)
-    if query.data == 'menu':
+        button2(update, context)
+    if query.data == 'menu' or query.data == 'back':
         menu(update, context)
 # Обработчик кнопки "Назад"
 def back_button(update, context):
     menu(update, context)  # Возвращаемся к сообщению с меню
+
+def button2(update, context):
+    text = "Мастер классы"
+    context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+    media_group = [
+        InputMediaPhoto(media=open('src/image_master_class_2.png', 'rb'), caption="Разработка и печать 3D модели"),
+        InputMediaPhoto(media=open('src/image_master_class_3.png', 'rb'), caption="Создание коллекции стикеров для Telegram канала"),
+        InputMediaPhoto(media=open('src/image_master_class_4.png', 'rb'), caption="Визуализация интерьера"),
+        InputMediaPhoto(media=open('src/image_master_class_5.png', 'rb'), caption="Создание лендинга на Tilda"),
+        InputMediaPhoto(media=open('src/image_master_class_6.png', 'rb'), caption="Покадровая анимация персонажа в технике Pixel Art"),
+        InputMediaPhoto(media=open('src/image_master_class_7.png', 'rb'), caption="Создание логотипа с использованием нейросетей"),
+        InputMediaPhoto(media=open('src/image_master_class_8.png', 'rb'), caption="Создай свою компьютерную игру в 2D"),
+        InputMediaPhoto(media=open('src/image_master_class_9.png', 'rb'), caption="Создай анимированного персонажа в 3D"),
+        InputMediaPhoto(media=open('src/image_master_class_10.png', 'rb'), caption="Моделирование 3D брелка"),
+        InputMediaPhoto(media=open('src/image_master_class_11.png', 'rb'), caption="Создай комикс"),
+    ]
+    context.bot.send_media_group(chat_id=update.effective_chat.id, media=media_group)
+    keyboard = [
+        [InlineKeyboardButton("Перейти на сайт", url='https://traektoriya-edu.ru/master-class')],
+        [InlineKeyboardButton("Назад", callback_data='back')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Что-то о мастер классах",
+                             reply_markup=reply_markup)
 
 load_dotenv()
 # Создание и запуск бота
