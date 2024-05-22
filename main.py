@@ -8,7 +8,7 @@ def start(update, context):
     text = "Привет, я Алекс! Я представитель центра дополнительного образования Траектория, и я готов помочь с поиском нужной информации. Для того, чтобы перейти к ней, нажми кнопку Меню"
     keyboard = [InlineKeyboardButton("Меню", callback_data='menu')], [InlineKeyboardButton("На сайт Траектория", url='https://traektoriya-edu.ru/')]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    context.bot.send_photo(chat_id=update.effective_chat.id, photo=open('test_photo (2).png', 'rb'))
+    context.bot.send_photo(chat_id=update.effective_chat.id, photo=open('src/start_image.png', 'rb'))
     context.bot.send_message(chat_id=update.effective_chat.id, text=text, reply_markup=reply_markup)
 
 # Обработчик команды /menu
@@ -27,21 +27,14 @@ def menu(update, context):
 # Обработчик нажатий на кнопки
 def button_click(update, context):
     query = update.callback_query
-    if query.data == 'button1':
-        text = "Вы нажали кнопку 1. Здесь кратинки и текст."
-        context.bot.send_message(chat_id=update.effective_chat.id, text=text)
-        context.bot.send_photo(chat_id=update.effective_chat.id, photo=open('test_photo (2).png', 'rb'))
-        keyboard = [
-            [InlineKeyboardButton("Перейти на сайт", url='http://example.com')],
-            [InlineKeyboardButton("Назад", callback_data='back')]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Дополнительная информация.", reply_markup=reply_markup)
-
     if query.data == 'button2':
         button2(update, context)
+    if query.data == 'button1':
+        button1(update, context)
     if query.data == 'menu' or query.data == 'back':
         menu(update, context)
+    if query.data == 'button4':
+        button4(update, context)
 # Обработчик кнопки "Назад"
 def back_button(update, context):
     menu(update, context)  # Возвращаемся к сообщению с меню
@@ -69,6 +62,48 @@ def button2(update, context):
     reply_markup = InlineKeyboardMarkup(keyboard)
     context.bot.send_message(chat_id=update.effective_chat.id, text="Что-то о мастер классах",
                              reply_markup=reply_markup)
+
+
+def button1(update, context):
+    text = "Отзывы"
+    context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+    media_group = [
+        InputMediaPhoto(media=open('src/image_review_1.png', 'rb'), caption="Отзывы"),
+        InputMediaPhoto(media=open('src/image_review_2.png', 'rb'), caption="Отзывы"),
+        InputMediaPhoto(media=open('src/image_review_3.png', 'rb'), caption="Отзывы"),
+        InputMediaPhoto(media=open('src/image_review_4.png', 'rb'), caption="Отзывы"),
+        InputMediaPhoto(media=open('src/image_review_5.png', 'rb'), caption="Отзывы"),
+        InputMediaPhoto(media=open('src/image_review_6.png', 'rb'), caption="Отзывы")
+    ]
+    context.bot.send_media_group(chat_id=update.effective_chat.id, media=media_group)
+    keyboard = [
+        [InlineKeyboardButton("Перейти на сайт", url='https://traektoriya-edu.ru/reviews')],
+        [InlineKeyboardButton("Назад", callback_data='back')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Что-то об отзывах",
+                             reply_markup=reply_markup)
+
+def button4(update, context):
+    text = "Магазин"
+    context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+    media_group = [
+        InputMediaPhoto(media=open('src/image_review_1.png', 'rb'), caption="Отзывы"),
+        InputMediaPhoto(media=open('src/image_review_2.png', 'rb'), caption="Отзывы"),
+        InputMediaPhoto(media=open('src/image_review_3.png', 'rb'), caption="Отзывы"),
+        InputMediaPhoto(media=open('src/image_review_4.png', 'rb'), caption="Отзывы"),
+        InputMediaPhoto(media=open('src/image_review_5.png', 'rb'), caption="Отзывы"),
+        InputMediaPhoto(media=open('src/image_review_6.png', 'rb'), caption="Отзывы")
+    ]
+    context.bot.send_media_group(chat_id=update.effective_chat.id, media=media_group)
+    keyboard = [
+        [InlineKeyboardButton("Перейти на сайт", url='https://traektoriya-edu.ru/shop')],
+        [InlineKeyboardButton("Назад", callback_data='back')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Благодаря своей активности в ходе прохождения стажировки ребята заработывают очки знаний, умений и навыков. В дальнейшем они могут обменять свои накопления в ИТ магазине. \n Оформлять заказ можно на сайте, а забрать в офисе Траектории!",
+                             reply_markup=reply_markup)
+
 
 load_dotenv()
 # Создание и запуск бота
