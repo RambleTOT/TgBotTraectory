@@ -88,12 +88,11 @@ def button4(update, context):
     text = "Магазин"
     context.bot.send_message(chat_id=update.effective_chat.id, text=text)
     media_group = [
-        InputMediaPhoto(media=open('src/image_review_1.png', 'rb'), caption="Отзывы"),
-        InputMediaPhoto(media=open('src/image_review_2.png', 'rb'), caption="Отзывы"),
-        InputMediaPhoto(media=open('src/image_review_3.png', 'rb'), caption="Отзывы"),
-        InputMediaPhoto(media=open('src/image_review_4.png', 'rb'), caption="Отзывы"),
-        InputMediaPhoto(media=open('src/image_review_5.png', 'rb'), caption="Отзывы"),
-        InputMediaPhoto(media=open('src/image_review_6.png', 'rb'), caption="Отзывы")
+        InputMediaPhoto(media=open('src/image_shop_1.png', 'rb'), caption="Очки виртуальной реальности"),
+        InputMediaPhoto(media=open('src/image_shop_2.png', 'rb'), caption="Графический планшет"),
+        InputMediaPhoto(media=open('src/image_shop_3.png', 'rb'), caption="Гусь-обнимусь"),
+        InputMediaPhoto(media=open('src/image_shop_4.png', 'rb'), caption="Настольная игра"),
+        InputMediaPhoto(media=open('src/image_shop_5.png', 'rb'), caption="Магкая игрушка - Заяц")
     ]
     context.bot.send_media_group(chat_id=update.effective_chat.id, media=media_group)
     keyboard = [
@@ -101,7 +100,7 @@ def button4(update, context):
         [InlineKeyboardButton("Назад", callback_data='back')]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Благодаря своей активности в ходе прохождения стажировки ребята заработывают очки знаний, умений и навыков. В дальнейшем они могут обменять свои накопления в ИТ магазине. \n Оформлять заказ можно на сайте, а забрать в офисе Траектории!",
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Благодаря своей активности в ходе прохождения стажировки ребята заработывают очки знаний, умений и навыков. В дальнейшем они могут обменять свои накопления в ИТ магазине.\n\nОформлять заказ можно на сайте, а забрать в офисе Траектории!",
                              reply_markup=reply_markup)
 
 
