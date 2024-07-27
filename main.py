@@ -1,5 +1,5 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto, Update
+from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, MessageHandler, Filters, CallbackContext
 from dotenv import load_dotenv
 import os
 
@@ -24,16 +24,6 @@ def menu(update, context):
     reply_markup = InlineKeyboardMarkup(keyboard)
     context.bot.send_message(chat_id=update.effective_chat.id, text=text, reply_markup=reply_markup)
 
-    # keyboard = [
-    #     [InlineKeyboardButton("Мероприятия", callback_data='button2')],
-    #     [InlineKeyboardButton("Треки", callback_data='button3')],
-    #     [InlineKeyboardButton("IT магазин", callback_data='button4')],
-    #     [InlineKeyboardButton("Наша команда", callback_data='button5')],
-    #     [InlineKeyboardButton("Отзывы (2GIS)", url='https://2gis.ru/yaroslavl/firm/70000001067234653/tab/reviews')]
-    # ]
-    # reply_markup = InlineKeyboardMarkup(keyboard)
-    # context.bot.send_message(chat_id=update.effective_chat.id, text=text, reply_markup=reply_markup)
-
 # Обработчик нажатий на кнопки
 def button_click(update, context):
     query = update.callback_query
@@ -57,6 +47,8 @@ def button_click(update, context):
         buttonInfo(update, context)
     if query.data == 'buttonContact':
         buttonContact(update, context)
+    if query.data == 'buttonConsultation':
+        buttonConsultation(update, context)
 
 
 # Обработчик кнопки "Назад"
@@ -83,9 +75,10 @@ def buttonNo(update, context):
     text = "Информация для будущих учеников"
     keyboard = [
         [InlineKeyboardButton("Отзывы (2GIS)", url='https://2gis.ru/yaroslavl/firm/70000001067234653/tab/reviews')],
-        [InlineKeyboardButton("Треки", callback_data='button3')],
+        [InlineKeyboardButton("Записаться на пробный урок ", url='https://vk.com/app6013442_-215628262#form_id=1')],
+        [InlineKeyboardButton("Образовательные треки", callback_data='button3')],
         [InlineKeyboardButton("Расписание учебных групп", url='https://traektoriya-edu.ru/timetable')],
-        [InlineKeyboardButton("Записаться на пробный урок ", url='https://vk.com/trek_2022?w=app6013442_-215628262%2523form_id%253D1')],
+        [InlineKeyboardButton("Получить консультацию", callback_data='buttonConsultation')],
         [InlineKeyboardButton("Назад", callback_data='back')]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -131,24 +124,6 @@ def button3(update, context):
                              reply_markup=reply_markup)
 
 
-# def buttonShop(update, context):
-#     text = "IT магазин"
-#     context.bot.send_message(chat_id=update.effective_chat.id, text=text)
-#     media_group = [
-#         InputMediaPhoto(media=open('src/image_shop_1.png', 'rb'), caption="Очки виртуальной реальности"),
-#         InputMediaPho to(media=open('src/image_shop_2.png', 'rb'), caption="Графический планшет"),
-#         InputMediaPhoto(media=open('src/image_shop_3.png', 'rb'), caption="Гусь-обнимусь"),
-#         InputMediaPhoto(media=open('src/image_shop_4.png', 'rb'), caption="Настольная игра"),
-#         InputMediaPhoto(media=open('src/image_shop_5.png', 'rb'), caption="Магкая игрушка - Заяц")
-#     ]
-#     context.bot.send_media_group(chat_id=update.effective_chat.id, media=media_group)
-#     keyboard = [
-#         [InlineKeyboardButton("Перейти на сайт", url='https://traektoriya-edu.ru/shop')],
-#         [InlineKeyboardButton("Назад", callback_data='backNo')]
-#     ]
-#     reply_markup = InlineKeyboardMarkup(keyboard)
-#     context.bot.send_message(chat_id=update.effective_chat.id, text="Благодаря своей активности в ходе прохождения стажировки ребята заработывают очки знаний, умений и навыков. В дальнейшем они могут обменять свои накопления в ИТ магазине.\n\nОформлять заказ можно на сайте, а забрать в офисе Траектории!",
-#                              reply_markup=reply_markup)
 
 def buttonInfo(update, context):
     text = "Траектория - это обучение ИТ и КОВОРКИНГ в современном бизнес-центре Ярославля"
@@ -175,6 +150,26 @@ def buttonContact(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=text,
                              reply_markup=reply_markup)
+
+def buttonConsultation(update, context):
+    text = "Чтобы с вами связались для консультации, вы должны оставить свои ФИО и номер телфеона"
+    keyboard = [
+        [InlineKeyboardButton("Назад", callback_data='backNo')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text=text,
+                             reply_markup=reply_markup)
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
+
+
+def echo(update: Update, context: CallbackContext) -> None:
+    # Получаем текст сообщения от пользователя
+    user_message = 'Данные для консультации:\n' + update.message.text
+
+    # Отправляем сообщение на другой аккаунт
+    context.bot.send_message(chat_id=os.getenv('CHAT_TOKEN'), text=user_message)
+
 
 load_dotenv()
 # Создание и запуск бота
