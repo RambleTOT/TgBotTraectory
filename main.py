@@ -152,7 +152,7 @@ def buttonContact(update, context):
                              reply_markup=reply_markup)
 
 def buttonConsultation(update, context):
-    text = "Чтобы с вами связались для консультации, вы должны оставить свои ФИО и номер телфеона"
+    text = "Чтобы с вами связались для консультации, вы должны оставить свои ФИО и номер телфеона в одном сообщении"
     keyboard = [
         [InlineKeyboardButton("Назад", callback_data='backNo')]
     ]
@@ -169,6 +169,9 @@ def echo(update: Update, context: CallbackContext) -> None:
 
     # Отправляем сообщение на другой аккаунт
     context.bot.send_message(chat_id=os.getenv('CHAT_TOKEN'), text=user_message)
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text='Данные успешно отправлены')
+    buttonNo(update, context)
 
 
 load_dotenv()
